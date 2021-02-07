@@ -11,7 +11,7 @@ def getFilesInDir():
 
 # Kirjoitetaan funktio, joka valitsee parametrinä annetusta sanakirjalistasta valitun määrän verran sanoja; ts. salasanan
 def createPassword(sequenceLength:int, wordlist:str):
-    with open(filesInDirectory[selectedFile], encoding="utf-8") as openedFile:
+    with open(wordlist, encoding="utf-8") as openedFile:
         availableWords = []
         for line in openedFile:
             availableWords.append(line.strip())
@@ -25,29 +25,31 @@ def createPassword(sequenceLength:int, wordlist:str):
     
     return str(randomSequence)
 
-while True:
-    try:
-        wordLength = int(input("Password length (words): "))
-        break
-    except:
-        print("Error, try again")
-
-while True:
+def askLength():
+    while True:
+        try:
+            wordLength = int(input("Password length (words): "))
+            return wordLength
+        except TypeError:
+            print("Error, try again")
+def main():
+    wordLength = askLength()
     filesInDirectory = getFilesInDir()
 
     if len(filesInDirectory) <= 0:
-        print("\nNo wordlist found in script folder, try again")
-        break
+        print("\nNo wordlists found in script folder, try again")
 
     print("")
 
     for index, availableFile in enumerate(filesInDirectory):
         print(f"{index} {availableFile}")
-
-    try:
-        selectedFile = int(input("\nSelect file index from list: "))
-    except:
-        print("Error, try again")
+    
+    while True:
+        try:
+            selectedFile = int(input("\nSelect file index from list: "))
+            break
+        except:
+            print("Error, try again")
 
     while True:
         print("\nGenerated passwords:\n")
@@ -57,5 +59,6 @@ while True:
 
         if input("\nRoll again (Y/N)?: ") == "N":
             break
-    
-    break
+
+if __name__ == "__main__":
+    main()
